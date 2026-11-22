@@ -51,7 +51,7 @@ renderTL("en", false);
 
 /* ---------- calendar ---------- */
 const fmt = d => new Date(d).toISOString().replace(/[-:]|\.\d{3}/g, "");
-const details = `Wedding of Nitin Chaurasiya & Khushi Chaurasiya.\nVenue: ${CONFIG.mapQuery}`;
+const details = `Wedding of Nitin Chaurasiya & Khushi Chaurasiya. Call 9769911052 / 9793181562.\nVenue: ${CONFIG.mapQuery}`;
 $("#gcal").href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${enc(CONFIG.coupleTitle)}&dates=${fmt(CONFIG.start)}/${fmt(CONFIG.end)}&details=${enc(details)}&location=${enc(CONFIG.mapQuery)}`;
 const ics = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Wedding//EN","BEGIN:VEVENT",
   `UID:nitin-khushi-${fmt(CONFIG.start)}@wedding`,`DTSTAMP:${fmt(new Date())}`,
@@ -231,8 +231,9 @@ const HI = {
   tip: "सुझाव: “रास्ता देखें” दबाएँ, गूगल मैप आपकी वर्तमान जगह से मार्ग बताएगा।",
   love: "सप्रेम, हमारे परिवार",
   fam: "चौरसिया परिवार<br><span class=\"sm\">श्री सचिन चौरसिया &nbsp;·&nbsp; श्री संतलाल चौरसिया</span>",
-  wa: "💬&nbsp; व्हाट्सऐप पर पुष्टि करें", share: "निमंत्रण साझा करें",
-  foot: "नितिन <i>&</i> खुशी · 03.12.2026"
+  call1: "📞&nbsp; कॉल करें 97699 11052", call2: "📞&nbsp; कॉल करें 97931 81562", wa: "💬&nbsp; व्हाट्सऐप पर पुष्टि करें", share: "निमंत्रण साझा करें",
+  foot: "नितिन <i>&</i> खुशी · 03.12.2026",
+  credit: "विकसित एवं संचालित: <b>विपिन सी</b>"
 };
 var LANG = "en";
 function applyLang(l) {

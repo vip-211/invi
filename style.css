@@ -353,3 +353,6 @@ html[lang=hi] .msg{line-height:1.9;font-size:18px}
 html[lang=hi] .foot{font-style:normal;font-weight:400}
 html[lang=hi] .btn,html[lang=hi] .hero-date span,html[lang=hi] .count span{font-size:13px}
 html[lang=hi] .hero-date b{font-family:'Cormorant Garamond',serif}
+
+.credit{margin-top:26px;padding-top:16px;border-top:1px solid rgba(201,164,92,.4);font-family:var(--sans);font-size:12.5px;letter-spacing:.08em;color:#8a8870}
+.credit b{font-weight:500;color:var(--gold-d)}
