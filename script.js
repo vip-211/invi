@@ -7,10 +7,11 @@ const CONFIG = {
   start: "2026-12-03T18:00:00+05:30",
   end:   "2026-12-04T02:00:00+05:30",
 
-  venueName: "Saiganj, Bharwari",
+  venueName: "Chandraraj Palace",
   // Used for the Google Map + directions. Replace with a hall/lawn name or
   // exact pin text (e.g. "Shree Ram Garden, Bharwari, Kausambi") for a sharper pin.
-  mapQuery: "Saiganj, Bharwari, Kausambi, Uttar Pradesh 212201",
+  mapQuery: "Chandraraj Palace, Hathgaon, Sithoura, Uttar Pradesh 212652",
+  mapLink: "https://www.google.com/maps/place/Chandraraj+Palace,+Road,+Hathgaon,+Sithoura,+Uttar+Pradesh+212652/data=!4m2!3m1!1s0x399b6dca8da4d1bf:0x9d0aaa46002cb291",
 
   // WhatsApp number with country code, digits only (e.g. "919876543210"). Leave "" to hide button.
   whatsapp: "",
@@ -18,12 +19,12 @@ const CONFIG = {
   // NOTE: timings below are SAMPLE — change to your real schedule.
   icons: ["🥂","🐎","💐","🍽️","🔥","🌸"],
   timeline: [
-    { t: "3 Dec · 4:00 PM", h: "Guest Arrival",        d: "Welcome drinks & refreshments" },
-    { t: "3 Dec · 6:00 PM", h: "Baraat Aagman",        d: "The groom’s procession arrives with music & dance" },
-    { t: "3 Dec · 7:30 PM", h: "Jaimala",              d: "The exchange of garlands" },
-    { t: "3 Dec · 8:30 PM", h: "Wedding Dinner",       d: "Join us for a festive feast" },
-    { t: "3 Dec · 10:30 PM", h: "Vivah · Saat Phere",  d: "The sacred wedding rituals" },
-    { t: "4 Dec · Morning", h: "Vidaai",               d: "A tearful, blessed farewell" }
+    { t: "3 Dec · 4:00 PM",  th: "3 दिसं · शाम 4:00 बजे",  h: "Guest Arrival",       hh: "अतिथि आगमन",        d: "Welcome drinks & refreshments", dh: "स्वागत पेय एवं जलपान" },
+    { t: "3 Dec · 6:00 PM",  th: "3 दिसं · शाम 6:00 बजे",  h: "Baraat Aagman",       hh: "बारात आगमन",        d: "The groom’s procession arrives with music & dance", dh: "संगीत और नृत्य के साथ बारात का आगमन" },
+    { t: "3 Dec · 7:30 PM",  th: "3 दिसं · रात 7:30 बजे",  h: "Jaimala",             hh: "जयमाला",            d: "The exchange of garlands", dh: "वरमाला का आदान-प्रदान" },
+    { t: "3 Dec · 8:30 PM",  th: "3 दिसं · रात 8:30 बजे",  h: "Wedding Dinner",      hh: "शुभ भोज",           d: "Join us for a festive feast", dh: "उत्सव के भोज में सम्मिलित हों" },
+    { t: "3 Dec · 10:30 PM", th: "3 दिसं · रात 10:30 बजे", h: "Vivah · Saat Phere",  hh: "विवाह · सात फेरे",   d: "The sacred wedding rituals", dh: "पावन विवाह की रस्में" },
+    { t: "4 Dec · Morning",  th: "4 दिसं · प्रातः",        h: "Vidaai",              hh: "विदाई",             d: "A tearful, blessed farewell", dh: "आशीर्वाद सहित भावुक विदाई" }
   ]
 };
 
@@ -32,18 +33,21 @@ const $ = s => document.querySelector(s);
 const enc = encodeURIComponent;
 
 /* ---------- map + links ---------- */
-$("#vName").textContent = CONFIG.venueName;
 $("#mapFrame").src = `https://www.google.com/maps?q=${enc(CONFIG.mapQuery)}&z=15&output=embed`;
 $("#dirBtn").href = `https://www.google.com/maps/dir/?api=1&destination=${enc(CONFIG.mapQuery)}&travelmode=driving`;
-$("#mapBtn").href = `https://www.google.com/maps/search/?api=1&query=${enc(CONFIG.mapQuery)}`;
+$("#mapBtn").href = CONFIG.mapLink;
 if (CONFIG.whatsapp) {
   const w = $("#wa"); w.hidden = false;
   w.href = `https://wa.me/${CONFIG.whatsapp}?text=${enc("Namaste! We are happy to attend Nitin & Khushi’s wedding on 3rd December 2026. 🙏")}`;
 }
 
 /* ---------- timeline ---------- */
-$("#timeline").innerHTML = CONFIG.timeline.map(e =>
-  `<li class="reveal"><span class="ic">${CONFIG.icons[CONFIG.timeline.indexOf(e)]||"✦"}</span><span class="when">${e.t}</span><h4>${e.h}</h4><p>${e.d}</p></li>`).join("");
+function renderTL(lang, instant) {
+  const hi = lang === "hi";
+  $("#timeline").innerHTML = CONFIG.timeline.map((e, i) =>
+    `<li class="reveal${instant ? " in" : ""}"><span class="ic">${CONFIG.icons[i] || "✦"}</span><span class="when">${hi ? e.th : e.t}</span><h4>${hi ? e.hh : e.h}</h4><p>${hi ? e.dh : e.d}</p></li>`).join("");
+}
+renderTL("en", false);
 
 /* ---------- calendar ---------- */
 const fmt = d => new Date(d).toISOString().replace(/[-:]|\.\d{3}/g, "");
@@ -59,7 +63,7 @@ $("#ics").href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }))
 /* ---------- share ---------- */
 $("#share").addEventListener("click", async () => {
   const data = { title: "Nitin & Khushi's Wedding", text: "You're invited! 3rd Dec 2026 💍", url: location.href };
-  try { navigator.share ? await navigator.share(data) : (await navigator.clipboard.writeText(location.href), $("#share").textContent = "Link copied ✓"); } catch (e) {}
+  try { navigator.share ? await navigator.share(data) : (await navigator.clipboard.writeText(location.href), $("#share").textContent = LANG === "hi" ? "लिंक कॉपी हुआ ✓" : "Link copied ✓"); } catch (e) {}
 });
 
 /* ---------- countdown ---------- */
@@ -196,7 +200,7 @@ loop();
     if (clear / total > .38) finish();
   }
   function finish() {
-    done = true; cv.classList.add("gone"); document.querySelector(".heart-text").classList.add("pop"); $("#scratchHint").textContent = "See you there! 💚";
+    done = true; cv.classList.add("gone"); { const hn = $("#scratchHint"); hn.dataset.i18n = "hintDone"; hn.dataset.en = "See you there! 💚"; hn.innerHTML = LANG === "hi" ? HI.hintDone : hn.dataset.en; } document.querySelector(".heart-text").classList.add("pop"); 
     petals(true);
   }
   cv.addEventListener("pointerdown", e => { down = true; last = null; cv.setPointerCapture(e.pointerId); scratch(e); });
@@ -204,3 +208,45 @@ loop();
   const up = () => { down = false; last = null; if (!done) check(); };
   cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
 })();
+
+
+/* ---------- language (English / हिन्दी) ---------- */
+const HI = {
+  tap: "खोलने के लिए मुहर को छुएँ",
+  eyebrow: "हम विवाह बंधन में बंध रहे हैं",
+  n1: "नितिन", n2: "खुशी",
+  p1: "श्री सचिन चौरसिया के सुपुत्र",
+  p2: "श्री संतलाल चौरसिया की सुपुत्री",
+  thu: "गुरुवार", place: "कौशाम्बी, उ.प्र.",
+  m1: "बड़ों के आशीर्वाद और हृदय के उल्लास के साथ, हमें आपको <em>नितिन</em> एवं <em>खुशी</em> के शुभ विवाह में सादर आमंत्रित करते हुए अपार हर्ष हो रहा है।",
+  m2: "प्रेम और साथ की इस नई यात्रा में आपकी उपस्थिति और आशीर्वाद हमारे उत्सव को पूर्ण करेंगे।",
+  scratch: "खरोंचकर देखें", std: "तारीख याद रखें", d3: "3 दिसंबर",
+  hint: "उंगली से दिल को खरोंचिए ♡", hintDone: "वहाँ मिलते हैं! 💚",
+  gcal: "📅&nbsp; तारीख सहेजें", ics: "कैलेंडर में जोड़ें (.ics)",
+  count: "सदा के लिए उल्टी गिनती", days: "दिन", hours: "घंटे", mins: "मिनट", secs: "सेकंड",
+  prog: "कार्यक्रम", venue: "विवाह स्थल",
+  vname: "चंद्रराज पैलेस", vaddr: "रोड, हथगाँव, सिठौरा<br>उत्तर प्रदेश – 212652, भारत",
+  vdate: "गुरुवार, 3 दिसंबर 2026",
+  dir: "➤&nbsp; रास्ता देखें", mapb: "गूगल मैप में खोलें",
+  tip: "सुझाव: “रास्ता देखें” दबाएँ, गूगल मैप आपकी वर्तमान जगह से मार्ग बताएगा।",
+  love: "सप्रेम, हमारे परिवार",
+  fam: "चौरसिया परिवार<br><span class=\"sm\">श्री सचिन चौरसिया &nbsp;·&nbsp; श्री संतलाल चौरसिया</span>",
+  wa: "💬&nbsp; व्हाट्सऐप पर पुष्टि करें", share: "निमंत्रण साझा करें",
+  foot: "नितिन <i>&</i> खुशी · 03.12.2026"
+};
+var LANG = "en";
+function applyLang(l) {
+  LANG = l;
+  document.documentElement.lang = l;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    if (el.dataset.en === undefined) el.dataset.en = el.innerHTML;
+    const k = el.dataset.i18n;
+    el.innerHTML = l === "hi" && HI[k] !== undefined ? HI[k] : el.dataset.en;
+  });
+  renderTL(l, true);
+  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("on", b.dataset.l === l));
+  document.title = l === "hi" ? "नितिन & खुशी — विवाह निमंत्रण · 3 दिसंबर 2026" : "Nitin & Khushi — Wedding Invitation · 3 December 2026";
+  try { localStorage.setItem("lang", l); } catch (e) {}
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.l)));
+try { if (localStorage.getItem("lang") === "hi") applyLang("hi"); } catch (e) {}

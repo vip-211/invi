@@ -331,3 +331,25 @@ body.opened .arch path{animation:draw 3.2s ease forwards .2s}
 @keyframes bob{50%{transform:translateY(-6px)}}
 .reveal.zoom{transform:scale(.92)}.reveal.zoom.in{transform:none}
 .divider .fl{width:22px;height:22px}
+
+/* ===== v3: clear capital names, language switcher ===== */
+.name{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(54px,17vw,80px);line-height:1.1}
+.name::first-letter{font-size:1.3em;font-weight:700}
+.msg em{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;font-size:1.35em;display:inline-block;padding:0 3px}
+.seal-mono{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600}
+.foot{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;font-size:24px}
+.lang{position:fixed;top:12px;right:12px;z-index:70;display:flex;padding:3px;border-radius:999px;
+  background:rgba(255,250,240,.93);border:1px solid var(--gold);box-shadow:0 4px 14px rgba(0,0,0,.18);backdrop-filter:blur(6px)}
+.lang button{padding:7px 14px;border-radius:999px;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--sage-d);transition:background .25s,color .25s}
+.lang button[lang=hi]{font-family:'Tiro Devanagari Hindi',serif;font-size:14px;padding:5px 14px}
+.lang button.on{background:var(--sage-d);color:#fdf6e4}
+html[lang=hi]{--serif:'Tiro Devanagari Hindi',Georgia,serif;--script:'Tiro Devanagari Hindi',serif;--sans:'Tiro Devanagari Hindi','Jost',sans-serif}
+html[lang=hi] *{letter-spacing:normal!important}
+html[lang=hi] .name{font-family:'Tiro Devanagari Hindi',serif;font-style:normal;font-weight:400;font-size:clamp(50px,15vw,70px);line-height:1.25}
+html[lang=hi] .name::first-letter{font-size:1em;font-weight:400}
+html[lang=hi] .msg em{font-family:'Tiro Devanagari Hindi',serif;font-style:normal;font-weight:400;font-size:1.15em}
+html[lang=hi] .script{font-size:32px;line-height:1.4}
+html[lang=hi] .msg{line-height:1.9;font-size:18px}
+html[lang=hi] .foot{font-style:normal;font-weight:400}
+html[lang=hi] .btn,html[lang=hi] .hero-date span,html[lang=hi] .count span{font-size:13px}
+html[lang=hi] .hero-date b{font-family:'Cormorant Garamond',serif}
